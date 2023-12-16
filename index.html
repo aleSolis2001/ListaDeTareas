@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Lista de Tareas</h1>
+  <div class="container">
+    <form id="form" onsubmit="event.preventDefault(); añadirTarea()">
+      <input type="text" id="tarea-input" placeholder="Agregar tarea">
+      <input type="datetime-local" id="tarea-fecha" placeholder="25/12/2023">
+      <button type="submit" id="agregar">Agregar</button>
+    </form>
+  </div>
+
+  <ul id="lista-tareas">
+  </ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
