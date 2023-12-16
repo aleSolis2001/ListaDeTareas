@@ -1,4 +1,25 @@
+let permiso = false
+window.onload = function () {
+  console.log(localStorage)
+  const lista = document.getElementById('lista-tareas');
+  lista.innerHTML = localStorage.getItem('tareas') || '';
 
+
+  const botonesEliminar = document.querySelectorAll('.tarea button');
+  botonesEliminar.forEach(button => {
+    button.onclick = function () {
+      const tarea = button.closest('li');
+      lista.removeChild(tarea);
+      guardarEnLocalStorage();
+  };
+});
+  Notification.requestPermission().then(function (permission) {
+      if (permission === 'granted') {
+          permiso = true;
+      }});
+      
+
+}
 function añadirTarea() {
     const inputTarea = document.getElementById('tarea-input');
     const fecha = document.getElementById('tarea-fecha');
@@ -48,25 +69,30 @@ function añadirTarea() {
       inputTarea.value = '';
       fecha.value = '';
       guardarEnLocalStorage()
+      programarNotificacion(date, inputTarea.value);
+
       
     }
   }
+  function programarNotificacion(tareaFecha, tareaTexto) {
+    console.log(permiso)
+    const ahora = new Date();
+    const tiempoRestante = tareaFecha.getTime() - ahora.getTime();
+
+    const tiempoNotificacion = tiempoRestante - 60 * 60 * 1000;
+
+    if (tiempoNotificacion > 0) {
+        setTimeout(()=> notificar(tareaTexto), tiempoNotificacion);
+    }
+}
+
+function notificar() {
+  if (permiso === true) {
+    console.log("Me muestro")
+    new Notification('Noti');
+}
+}
   function guardarEnLocalStorage() {
     const lista = document.getElementById('lista-tareas');
     localStorage.setItem('tareas', lista.innerHTML);
   }
-  window.onload = function(){
-    console.log(localStorage)
-    const lista = document.getElementById('lista-tareas');
-    lista.innerHTML = localStorage.getItem('tareas') || '';
-
-
-    const botonesEliminar = document.querySelectorAll('.tarea button');
-    botonesEliminar.forEach(button => {
-      button.onclick = function () {
-        const tarea = button.closest('li');
-        lista.removeChild(tarea);
-        guardarEnLocalStorage();
-    };
-  });
-}
